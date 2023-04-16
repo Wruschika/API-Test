@@ -12,12 +12,13 @@ Scenario: Verify user is added using api
 	When user calls "api" with get request
 	Then API call success with status code equal 200 
 	
-	Scenario: Verify user is getting deleted
-	Given delete user API and id
-	When user calls "api" with delete request
-	Then API call success with status code is 204
 	
 	Scenario: Verify user is getting updated
 	Given update user API and id
 	When user calls "api" with put request
 	Then API call success with status code as 200
+	
+	Scenario: Verify user is getting deleted
+	Given delete user API and id
+	When user calls "api" with delete request
+	Then API call success with status code is 204

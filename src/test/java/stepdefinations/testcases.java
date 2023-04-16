@@ -21,7 +21,7 @@ public class testcases {
 private final String BASE_URL = "https://gorest.co.in";
 private final String token = "f22715ae85220457779b9a82f3a3fb4e833f789a92d814146ce9421807a8911f";
 private final String authToken ="Bearer "+token;
-private final int id = 0;
+public static int id;
 //private final String data = 
 	private Response response;
 	RequestSpecification requestspecification;
@@ -58,7 +58,7 @@ request = RestAssured.given().log().all().headers("Content-Type","application/js
 	    // Write code here that turns the phrase above into concrete actions
 		int actualresponsecode = response.then().log().all().extract().statusCode();
 	    Assert.assertEquals(response.getStatusCode(),201);
-	    Object id = response.then().extract().path("id");
+	    id = response.then().extract().path("id");
 	    System.out.println(id);
 	}
 
@@ -102,13 +102,13 @@ request = RestAssured.given().log().all().headers("Content-Type","application/js
 			
 	RestAssured.baseURI= BASE_URL;
 
-	request = RestAssured.given().log().all().headers("Content-Type","application/json","Accept","application/json","Authorization",authToken)
+	request = RestAssured.given().pathParam("userID",id).log().all().headers("Content-Type","application/json","Accept","application/json","Authorization",authToken)
 	.body(jsonAsMap);
 	}
 	@When("user calls {string} with put request")
 	public void user_calls_with_put_request(String string) {
 	    // Write code here that turns the phrase above into concrete actions
-		response = request.when().put("public/v2/users/+id+");
+		response = request.when().put("/public/v2/users/{userID}");
 	}
 	@Then("API call success with status code as {int}")
 	public void api_call_success_with_status_code_as(Integer int1) {
@@ -127,18 +127,20 @@ request = RestAssured.given().log().all().headers("Content-Type","application/js
 		//String token ="f22715ae85220457779b9a82f3a3fb4e833f789a92d814146ce9421807a8911f";
 		//String authToken ="Bearer "+token;
 
-		request = RestAssured.given().log().all().headers("Content-Type","application/json","Accept","application/json","Authorization",authToken);
+		request = RestAssured.given().pathParam("userID",id).log().all().headers("Content-Type","application/json","Accept","application/json","Authorization",authToken);
 	}
 	@When("user calls {string} with delete request")
 	public void user_calls_with_delete_request(String string) {
 	    // Write code here that turns the phrase above into concrete actions
-		response = request.when().delete("public/v2/users/+id+");
+		response = request.when().delete("/public/v2/users/{userID}");
 	}
 	@Then("API call success with status code is {int}")
 	public void api_call_success_with_status_code_is(Integer int1) {
 	    // Write code here that turns the phrase above into concrete actions
 		response.then().log().all().extract().statusCode();
-	    Assert.assertEquals(response.getStatusCode(),404);
+	    Assert.assertEquals(response.getStatusCode(),204);
 	}
+	
+
 }
 
